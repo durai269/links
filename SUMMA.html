@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Love Journey</title>
+    <style>
+        /* Common styles */
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            position: relative;
+            color: white;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background: linear-gradient(to right, #ff758c, #ff9a9e, #ff7eb3, #ff758c);
+        }
+
+        .container {
+            max-width: 800px;
+            background: linear-gradient(to bottom, #77b6ea, #a7e9af);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            z-index: 1;
+            position: relative;
+        }
+
+        button {
+            background: #ff758c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .heart {
+            position: absolute;
+            top: -50px;
+            color: rgba(255, 255, 255, 0.7);
+            animation: falling linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes falling {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Page-specific styles */
+        #page2 .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(to right, #77b6ea, #a7e9af);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 100;
+            color: black;
+        }
+
+        #page2 .popup button {
+            background-color: #ff477e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #page2 .word {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 8px;
+            color: #ff477e;
+        }
+
+        #page2 .message {
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff477e;
+        }
+
+        #page2 input {
+            font-size: 18px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        #page2 .button {
+            background-color: #ff477e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #page3 .page-content {
+            width: 400px;
+            height: 550px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #page3 .page-slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.6s ease-in-out;
+            transform: translateX(100%);
+            background: linear-gradient(to right, #77b6ea, #a7e9af);
+        }
+
+        #page3 .visible {
+            transform: translateX(0);
+        }
+
+        #page3 .heart-button {
+            margin-top: 20px;
+            background: rgb(100, 140, 248);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #page4 .game-button {
+            font-size: 20px;
+            padding: 15px 30px;
+            margin: 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        #page4 .btn1 { background: #ff4757; color: white; }
+        #page4 .btn2 { background: #1e90ff; color: white; }
+        #page4 .btn3 { background: #2ed573; color: white; }
+        #page4 .btn4 { background: #ffa502; color: white; }
+        #page4 .btn5 { background: #ff7eb3; color: white; }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        #page5 .yes {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #page5 .yes:hover {
+            background-color: #218838;
+        }
+
+        #page5 .no {
+            background-color: #dc3545;
+            color: white;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: default;
+        }
+
+        #page6 .letters {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #page6 .letter {
+            width: 80px;
+            height: 80px;
+            background: white;
+            color: black;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.5s ease;
+            perspective: 1000px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        #page6 .letter .front, #page6 .letter .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            border-radius: 8px;
+        }
+
+        #page6 .letter .front {
+            background: white;
+        }
+
+        #page6 .letter .back {
+            background: #4CAF50;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        #page6 .letter.flipped {
+            transform: rotateY(180deg);
+        }
+
+        #page6 .special {
+            background: gold !important;
+        }
+
+        #page7 .scroll-text {
+            font-size: 50px;
+            font-weight: bold;
+            position: absolute;
+            width: 100%;
+            white-space: nowrap;
+        }
+
+        #page7 .scroll1 { 
+            animation: scrollLeft 5s linear infinite; 
+            color: #ff4081;
+            top: 20%;
+        }
+
+        #page7 .scroll2 { 
+            animation: scrollRight 5s linear infinite; 
+            color: #fd635e;
+            top: 30%;
+        }
+
+        #page7 .scroll3 {
+            animation: scrollLeft 6s linear infinite;
+            color: #000;
+            top: 70%;
+        }
+
+        #page7 .scroll4 {
+            animation: scrollRight 6s linear infinite;
+            color: #ffa500;
+            top: 80%;
+        }
+
+        #page7 .moving-text {
+            font-size: 40px;
+            font-weight: bold;
+            position: absolute;
+            width: 100%;
+            white-space: nowrap;
+        }
+
+        #page7 .move1 {
+            animation: scrollLeft 6s linear infinite;
+            color:#f74f54;
+            top: 50%;
+        }
+
+        #page7 .move2 {
+            animation: scrollRight 6s linear infinite;
+            color:#ff4081;
+            top: 60%;
+        }
+
+        @keyframes scrollLeft {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes scrollRight {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1 - Love -->
+    <div class="page" id="page1" style="display: flex;">
+        <div class="container">
+            <h1>🎉 Happy Birthday, My Love 🤍</h1>
+            <p>💖</p>
+            <p>May your day be filled with love, laughter, and unforgettable memories. 💗✨<br><br>
+                Itha Pakkurathuku Munndai Varaikkum Ne Siruchutu Irunthurupayo Ennamodi 👀....Ana Ithu Rompa Mosama Irukum Di(Chii 😹) Ne Adjust Pannipa Nu Therium Di 😁...<br><br>Ana Onnu Di Ne Itha Pakkum Pothu Na Vekkathula irupen Di🫣<br><br>Unakaga Un Asai Kadhalan😩💙<br><br>CRINGE ALERT🐻<br><br>Press It...👇🏿
+            </p>
+            <button onclick="showPage('page2')">💖</button>
+        </div>
+    </div>
+
+    <!-- Page 2 - 2LOVE -->
+    <div class="page" id="page2">
+        <div class="popup" id="popup">
+            <p> ADUTHU PAKKANUMA DI PANNI 💟👀?</p>
+            <button onclick="acceptProposal()">Ama😅</button>
+            <button onclick="acceptProposall()">Mudiyathu🙃</button>
+        </div>
+
+        <div class="container" id="quizContent" style="display: none;">
+            <h1>Velaiyaduvomaa Ippa💌</h1>
+            <h2>Muduncha Kandupudi Di😹</h2>
+            <h2>Eppaumey💕</h2>
+            <div id="word" class="word">_ _ _ _ _ _ _ _</div>
+            <input type="text" id="letter" maxlength="1" />
+            <button class="button" id="guessBtn">Guess</button>
+
+            <div class="message" id="message"></div>
+            <center><button class="heart-buttonn" onclick="showPage('page3')">&#10084;</button></center>
+        </div>
+    </div>
+
+    <!-- Page 3 - ALTERRRR -->
+    <div class="page" id="page3">
+        <div class="page-content">
+            <div class="page-slide visible" id="slide1">
+                <h2>HAPPY BIRTH DAY DA THANGAAA PULLA💙😩</h2>
+                <p>Sandosama Iru Di Na Eppaum Unakaga <br>
+                    Irupen Da🐣✨</p>
+                <button class="heart-button" onclick="nextSlide(1)">&#10084;</button>
+            </div>
+            <div class="page-slide" id="slide2">
+                <h2>🐽</h2>
+                <p>Alu Mattu Than Ma Valanthurukka Ana <br>Ne Ennaku Pacha Kolantha di🍼🍫</p>
+                <button class="heart-button" onclick="nextSlide(2)">&#10084;</button>
+            </div>
+            <div class="page-slide" id="slide3">
+                <h2>🐼</h2>
+                <p>Unna Love Panna Nall La Irunthu Na Rompa Sandhosama iruken Di Unnala...<br>Enna Than En Life La Naraiya Peru Irunthalum <br>Ennaku Ne Mattum Than Da Mukkiyam🦋🥰</p>
+                <button class="heart-button" onclick="nextSlide(3)">&#10084;</button>
+            </div>
+            <div class="page-slide" id="slide4">
+                <h2>🫀</h2>
+                <p>Na Kadaikka Maten Nu Kavalapadatha Di🤧....<br>Na Unniya Than Di kalyanam <br>Pannuven Enna analum🥺....Entha Oru Problem <br>Nalum Na Unakaga Nippen Di🤍....Na Iruken Di Pathukalam Ethunalum🫂</p>
+                <button class="heart-button" onclick="nextSlide(4)">&#10084;</button>
+            </div>
+            <div class="page-slide" id="slide5">
+                <h2>🤭</h2>
+                <p>Ennaku Enna Sollaney Thrla Di Chelloww😸...<br>Love Va Sollitu Unga Amma Ta Ithalam Kaami Di<br> Enna Solluraganu Papom👀...<br>Ethulam Oru Gift Ta Nu Solluvaga Ana Ennala IvaloThanda PannaMudium😩Na Velaikku Poitu<br> Un BirthDay ku Ne MarakkaMudiyathu Gift Lam Kudupen Di💝...Na Eppidi Nu Na Solla<br> Thevailla Di 😜En Asa Rosa Unake<br> Therium Di Enniyaa Pathi😁🥰<br>
+                    <br>I LOVE YOU DI 😩🫶🤍<p>
+                <button class="heart-button" onclick="showPage('page4')">&#10084;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 4 - 3LOVE -->
+    <div class="page" id="page4">
+        <h1>🕹️ Oru Game Muduchuruvom 🎮😆</h1>
+        <p>Correct Ta Thodu Innoru Gift iruku Ulla!🐦‍🔥👀</p>
+
+        <div class="button-container">
+            <button class="game-button btn1" onclick="checkAnswer(1)">🐽 Panni</button>
+            <button class="game-button btn2" onclick="checkAnswer(2)">👻 Peeii</button>
+            <button class="game-button btn3" onclick="checkAnswer(3)">👹 Poochandi</button><br>
+            <button class="game-button btn4" onclick="checkAnswer(4)">🐃 Eruma</button>
+            <button class="game-button btn5" onclick="checkAnswer(5)">😁 SKIP</button>
+        </div>
+    </div>
+
+    <!-- Page 5 - 6LOVE -->
+    <div class="page" id="page5">
+        <div class="container" id="Crazy">
+            <h1>Athu Kulla Eppidi Muidpen😁</h1>
+            <h2>kekura Question La Ne Katharanum...👧🏽🥶</h2>
+            <h2>AMMA TA INNAIKU LOVE SOLLU😹?</h2>
+            <div class="buttons">
+                <button class="button yes" onclick="showMessage()">SOLLUREN😽</button>
+                <button class="button no" id="noButton">SOLLAMATEN 🤣</button>
+            </div>
+            <p id="message5" style="font-size: 20px; margin-top: 20px;"></p>
+        </div>
+    </div>
+
+    <!-- Page 6 - 4LOVE -->
+    <div class="page" id="page6">
+        <div class="container">
+            <h1>Sry Di Venna👻....Ithu Than Last Game🫡</h1>
+            <h1>SECRETE KANDUPUDI DI😜</h1>
+            <p>Adiyee Kandu Piduchu Namma Love kaapathu: <span id="attempts">0</span>/81<br>
+                ✯  ASH<br>
+                ✯ DA<br>
+                ✯  DSH<br>
+                ✯ NANE</p>
+            
+            <div class="letters">
+                <div class="letter" data-letter="A"> <span class="front">?</span><span class="back">A</span> </div>
+                <div class="letter" data-letter="B"> <span class="front">?</span><span class="back">B</span> </div>
+                <div class="letter" data-letter="C"> <span class="front">?</span><span class="back">C</span> </div>
+                <div class="letter" data-letter="D"> <span class="front">?</span><span class="back">D</span> </div>
+                <div class="letter" data-letter="E"> <span class="front">?</span><span class="back">E</span> </div>
+                <div class="letter" data-letter="F"> <span class="front">?</span><span class="back">F</span> </div>
+                <div class="letter" data-letter="G"> <span class="front">?</span><span class="back">G</span> </div>
+                <div class="letter" data-letter="H"> <span class="front">?</span><span class="back">H</span> </div>
+                <div class="letter" data-letter="S"> <span class="front">?</span><span class="back">S</span> </div>
+                <div class="letter" data-letter="I"> <span class="front">?</span><span class="back">I</span> </div>
+                <div class="letter" data-letter="J"> <span class="front">?</span><span class="back">J</span> </div>
+                <div class="letter" data-letter="K"> <span class="front">?</span><span class="back">K</span> </div>
+            </div>
+
+            <button id="checkCode">Check Code</button>
+            <button id="restartGame">Restart Game</button>
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <!-- Page 7 - 5LOVE -->
+    <div class="page" id="page7">
+        <!-- Scrolling Messages -->
+        <div class="scroll-text scroll1">🎉 HAPPY BIRTHDAY DI PONDATTI 🎂</div>
+        <div class="scroll-text scroll2">AVALODHANDA MUDUNCHU</div>
+        <div class="scroll-text scroll3">🐼</div>
+        <div class="scroll-text scroll4">🐥</div>
+
+        <!-- Moving Love Message -->
+        <div class="moving-text move1">UMMAAAAAAA DA THANGOOOOO 💖</div>
+        <div class="moving-text move2">LOVE YOU ❤️</div>
+    </div>
+
+    <script>
+        // Global variables
+        let wordToGuess = "ILOVEYOU";
+        let guessedLetters = [];
+        let openedLetters = [];
+        const secretCode = "DSH";
+        let attempts = 0;
+        const maxAttempts = 81;
+        let currentSlide = 1;
+        const totalSlides = 5;
+
+        // Show initial page
+        showPage('page1');
+
+        // Create falling hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+        
+        setInterval(createHeart, 300);
+
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = 'flex';
+            
+            // Initialize page-specific elements
+            if (pageId === 'page2') {
+                document.getElementById('popup').style.display = 'block';
+                document.getElementById('quizContent').style.display = 'none';
+            } else if (pageId === 'page3') {
+                currentSlide = 1;
+                document.querySelectorAll('.page-slide').forEach(slide => {
+                    slide.classList.remove('visible');
+                });
+                document.getElementById('slide1').classList.add('visible');
+            } else if (pageId === 'page6') {
+                // Reset letter game
+                attempts = 0;
+                openedLetters = [];
+                document.getElementById('attempts').textContent = attempts;
+                document.getElementById('result').textContent = '';
+                document.querySelectorAll('.letter').forEach(letter => {
+                    letter.classList.remove('flipped');
+                });
+            }
+        }
+
+        // Page 2 functions
+        function acceptProposal() {
+            alert('GOOD GIRL 👻');
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'block';
+            displayWord();
+        }
+
+        function acceptProposall(){
+            alert('NE ENNADI SOLLURATHU VENNA 😼'); 
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'block';
+            displayWord();
+        }
+
+        function displayWord() {
+            const wordDisplay = wordToGuess.split('').map(letter => guessedLetters.includes(letter) ? letter : '_').join(' ');
+            document.getElementById('word').textContent = wordDisplay;
+
+            if (!wordDisplay.includes('_')) {
+                document.getElementById('message').innerHTML = "🎉 Ahh Ahh Love You Love You😼🌙";
+            }
+        }
+
+        document.getElementById('guessBtn').addEventListener('click', makeGuess);
+        document.getElementById('letter').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                makeGuess();
+            }
+        });
+
+        function makeGuess() {
+            const letterInput = document.getElementById('letter').value.toUpperCase();
+            if (!letterInput) {
+                document.getElementById('message').innerHTML = "Type Pannu Di Mayiru";
+                return;
+            }
+            if (guessedLetters.includes(letterInput)) {
+                document.getElementById('message').innerHTML = "Already Guessed Di! 🔄";
+                return;
+            }
+            if (wordToGuess.includes(letterInput)) {
+                guessedLetters.push(letterInput);
+                document.getElementById('letter').value = '';
+                displayWord();
+            } else {
+                document.getElementById('message').innerHTML = "Wrong Letter Di! ❌";
+            }
+        }
+
+        // Page 3 functions
+        function nextSlide(current) {
+            document.getElementById('slide' + current).classList.remove('visible');
+            const next = current + 1;
+            if (next <= totalSlides) {
+                document.getElementById('slide' + next).classList.add('visible');
+            }
+        }
+
+        // Page 4 functions
+        function checkAnswer(buttonNumber) {
+            if (buttonNumber === 5) { // SKIP button is always correct
+                alert("TRY PANNU DA THANGOO...🫂");
+                setTimeout(() => {
+                    showPage('page5');
+                }, 1000);
+            } else {
+                document.body.classList.add("shake");
+                setTimeout(() => document.body.classList.remove("shake"), 300);
+                alert(" ITHUVUM ELLA DI🦴");
+            }
+        }
+
+        // Page 5 functions
+        function showMessage() {
+            document.getElementById("message5").innerText = "APPE OK OK 😊";
+            setTimeout(function() {
+                showPage('page6');
+            }, 2000);
+        }
+
+        document.getElementById("noButton").addEventListener("mouseover", function() {
+            let button = this;
+            let maxX = window.innerWidth - button.offsetWidth;
+            let maxY = window.innerHeight - button.offsetHeight;
+            let x = Math.random() * maxX;
+            let y = Math.random() * maxY;
+            button.style.position = "absolute";
+            button.style.left = `${x}px`;
+            button.style.top = `${y}px`;
+        });
+
+        // Page 6 functions
+        document.querySelectorAll("#page6 .letter").forEach(letter => {
+            letter.addEventListener("click", () => {
+                if (attempts < maxAttempts) {
+                    let letterValue = letter.getAttribute("data-letter");
+                    if (!openedLetters.includes(letterValue)) {
+                        openedLetters.push(letterValue);
+                        letter.classList.add("flipped");
+                        attempts++;
+                        document.getElementById("attempts").textContent = attempts;
+                    }
+                }
+            });
+        });
+
+        document.getElementById("checkCode").addEventListener("click", () => {
+            let sortedOpened = openedLetters.sort().join("");
+            if (sortedOpened === secretCode.split("").sort().join("")) {
+                document.getElementById("result").textContent = "EN ALACHE NEE KANDUPUDUCHRUVA DI";
+                document.getElementById("result").style.color = "gold";
+                setTimeout(() => {
+                    showPage('page7');
+                }, 3000);
+            } else {
+                document.getElementById("result").textContent = "❌ THAPPU!";
+                document.getElementById("result").style.color = "red";
+            }
+        });
+
+        document.getElementById("restartGame").addEventListener("click", () => {
+            showPage('page6');
+        });
+    </script>
+</body>
+</html>
